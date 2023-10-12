@@ -7,9 +7,10 @@ default: &default
 
 development:
   <<: *default
-  database: qna_development
+  database: q_n_a_development
 
 
 test:
   <<: *default
-  database: qna_test
+  database: q_n_a_test
+
