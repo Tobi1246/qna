@@ -21,10 +21,4 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
-# qna
-# qna
-# qna
-# qna
-# qna
-# qna
+
