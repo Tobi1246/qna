@@ -1,0 +1,2 @@
+p= answer.body
+= button_to 'DeleteA', answer_path(answer), method: :delete if current_user&.author?(answer)
