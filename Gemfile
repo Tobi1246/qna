@@ -10,14 +10,18 @@ gem 'puma'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
-gem 'turbolinks'
 gem 'jbuilder'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'slim-rails'
 gem 'devise'
 gem "twitter-bootstrap-rails"
-gem 'jquery-rails'
+gem "jquery-rails"
+gem 'bootstrap'
+gem 'bootstrap-sass'
+gem "sassc-rails"
 gem 'decent_exposure'
+gem 'turbolinks'
+gem 'webpacker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

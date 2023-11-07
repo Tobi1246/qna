@@ -11,8 +11,6 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     if @answer.save
       redirect_to question_path(@question), notice: "Answer create"
-    else
-      redirect_to question_path(@question), notice: "Answer not create"
     end
   end
 
