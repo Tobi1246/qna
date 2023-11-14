@@ -1,5 +1,5 @@
-= form_with model: [@question, @answer], local: true do |f|
-  = f.label :body
-  = f.text_area :body
+= form_with model: [@question, @answer], local: false do |f|
+  = f.label :body, "New"
+  = f.text_area :body, id: 'answer-body-create'
 
   = f.submit 'Answer'
