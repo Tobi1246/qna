@@ -1,0 +1,8 @@
+.question   
+  p= question.title
+  p= question.body
+  -if current_user&.author?(question)
+    p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+    = button_to 'DeleteQ', question_path(question), method: :delete, remote: true if current_user&.author?(question)
+
+  =render 'form_in_line'

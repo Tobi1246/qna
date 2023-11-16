@@ -1,25 +1,24 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[create destroy]  
-  before_action :find_question, only: %i[new create]
-  before_action :set_answer, only: %i[destroy]
-
-  def new
-    @answer = @question.answers.new
-  end
+  before_action :authenticate_user!, except: %i[create destroy update]  
+  before_action :find_question, only: %i[create edit]
+  before_action :set_answer, only: %i[destroy update mark_best]
 
   def create
-    @answer = @question.answers.build(answer_params)
-    if @answer.save
-      redirect_to question_path(@question), notice: "Answer create"
-    else
-      redirect_to question_path(@question), notice: "Answer not create"
-    end
+    @answer = @question.answers.create(answer_params)
   end
 
   def destroy
     @answer.destroy
-    redirect_to @answer.question, notice: 'Answer has bin deleted'
-  end  
+  end
+
+  def update
+    @answer.update(answer_params)
+  end 
+
+  def mark_best
+    @answer.mark_best
+    @answers = @answer.question.answers
+  end 
 
   private
 

@@ -16,7 +16,7 @@ feature 'User can create question', %q{
       click_on 'Ask question'
     end        
 
-    scenario 'Asks a question' do
+    scenario 'Asks a question', js: true do
 
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
@@ -26,14 +26,14 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text'
     end
-    scenario 'Asks a question with errors' do
+    scenario 'Asks a question with errors', js: true do
       click_on 'Ask'
 
       expect(page).to have_content "Title can't be blank"
     end
   end
   
-  scenario 'Unaunthenticated user tries to ask a question'  do
+  scenario 'Unaunthenticated user tries to ask a question', js: true  do
     visit questions_path
 
     expect(page).to have_no_content "Ask question"
