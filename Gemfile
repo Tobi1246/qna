@@ -17,7 +17,7 @@ gem 'devise'
 gem "twitter-bootstrap-rails"
 gem "jquery-rails"
 gem 'bootstrap'
-gem 'bootstrap-sass'
+#gem 'bootstrap-sass'
 gem "sassc-rails"
 gem 'decent_exposure'
 gem 'turbolinks'

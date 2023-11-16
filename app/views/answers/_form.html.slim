@@ -1,5 +1,7 @@
 = form_with model: [@question, @answer], local: false do |f|
-  = f.label :body, "New"
-  = f.text_area :body, id: 'answer-body-create'
-
-  = f.submit 'Answer'
+  p
+    = f.label :body, "New"
+    = f.text_area :body, id: 'answer-body-create'
+    = f.file_field :files, multiple: true, id: 'answer-files-create'
+  p
+    = f.submit 'Answer'
