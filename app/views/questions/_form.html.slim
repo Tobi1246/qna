@@ -7,6 +7,6 @@
     = f.text_area :body
   p 
     = f.label :files
-    = f.file_field :files, multiple: true, id: 'question-files-create'
+    = f.file_field :files, multiple: true, id: 'question-files-create', direct_upload: true
   p
     =f.submit 'Ask'

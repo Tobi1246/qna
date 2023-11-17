@@ -2,6 +2,6 @@
   p
     = f.label :body, "New"
     = f.text_area :body, id: 'answer-body-create'
-    = f.file_field :files, multiple: true, id: 'answer-files-create'
+    = f.file_field :files, multiple: true, id: 'answer-files-create', direct_upload: true
   p
     = f.submit 'Answer'
