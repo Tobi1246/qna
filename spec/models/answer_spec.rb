@@ -16,7 +16,10 @@ RSpec.describe Answer, type: :model do
   it "should change mark to best and reset other best(only 1 answer to best)" do
     expect { answers[0].mark_best }.to change(answers[0], :best)
     expect { answers[1].mark_best }.to change(answers[1], :best)
-    expect { answers[0].reload}.to change(answers[0], :best)
+    expect { answers[0].reload }.to change(answers[0], :best)
   end
 
+  it 'have multi the attach file' do
+    expect(question.answers.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
+  end  
 end

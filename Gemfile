@@ -17,11 +17,13 @@ gem 'devise'
 gem "twitter-bootstrap-rails"
 gem "jquery-rails"
 gem 'bootstrap'
-gem 'bootstrap-sass'
+#gem 'bootstrap-sass'
 gem "sassc-rails"
 gem 'decent_exposure'
 gem 'turbolinks'
 gem 'webpacker'
+gem "aws-sdk-s3", require: false
+gem 'dotenv-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

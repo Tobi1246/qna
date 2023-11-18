@@ -1,8 +1,15 @@
 .question   
   p= question.title
   p= question.body
+  -if question.files.attached? 
+    -question.files.each do |file|
+      .files_question id = file.id
+        = link_to file.filename.to_s, url_for(file)
+        -if current_user&.author?(question)
+          p= link_to "delete file", destroy_attach_file_question_path(file), method: :delete, remote: true
+
   -if current_user&.author?(question)
     p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
-    = button_to 'DeleteQ', question_path(question), method: :delete, remote: true if current_user&.author?(question)
+    = button_to 'DeleteQ', question_path(question), method: :delete, remote: true 
 
   =render 'form_in_line'
