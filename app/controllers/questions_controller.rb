@@ -8,10 +8,12 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.links.build
   end
 
   def new
     @question = Question.new
+    @question.links.build
   end
 
   def create
@@ -33,13 +35,18 @@ class QuestionsController < ApplicationController
     redirect_to questions_path,alert: "Question deleted"
   end
 
+  def destroy_attach_file
+    @file = ActiveStorage::Attachment.find(params[:id])
+    @file.purge
+  end
+
   private
 
   def set_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy])
   end
 end

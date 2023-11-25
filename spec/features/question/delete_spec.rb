@@ -21,6 +21,18 @@ feature 'User can delete question' do
 
       expect(page).to have_content "Question deleted"
     end
+    scenario "author question can delete one of attached file", js: true do
+
+      fill_in 'question_title', with: "qqwer"
+      fill_in 'question_body', with: "12345"
+      attach_file 'question-files-create', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Ask'
+
+      first('.files_question').click_link 'delete file'
+      
+      expect(page).to have_no_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end    
   end
   
   scenario 'Unaunthenticated user not have create question'  do

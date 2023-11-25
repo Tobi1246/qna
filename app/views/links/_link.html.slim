@@ -1,0 +1,8 @@
+.link id = link.id
+  - if link.url.include?('https://gist.github.com')
+    .gist
+      = javascript_include_tag(link.url + '.js')
+  - else
+    li= link_to link.name, link.url
+  p= link_to "delete link", link_path(link), method: :delete, remote: true
+ 

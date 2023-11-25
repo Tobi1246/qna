@@ -8,6 +8,7 @@ feature 'User can touch to best answer', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
   given!(:answer) { create(:answer, question: question, author: user) }
+  given!(:badge) { create(:badge) }
 
   scenario 'Unaunthenticated user no see link' do
     visit question_path(question)
@@ -28,6 +29,15 @@ feature 'User can touch to best answer', %q{
       expect(page).to have_content 'Best answer:'
       expect(page).to have_no_link "Best Answer"
     end
+
+    scenario 'Best Answer take badges', js: true do
+
+      click_on "Best Answer"
+
+      click_on "Badges"
+
+      expect(page).to have_content "Ur badges:"
+    end    
 
     scenario 'autor question see link Best Answer' do
       expect(page).to have_link "Best Answer"

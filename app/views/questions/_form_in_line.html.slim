@@ -1,9 +1,19 @@
   = form_with model: @question, local: false, class: 'hidden', html: { id: "edit-question-#{@question.id}" } do |f|
 
-    p= f.label :title
-    = f.text_area :title
+    p
+      = f.label :title
+      = f.text_area :title
 
-    p= f.label :body
-    = f.text_area :body
+    p
+      = f.label :body
+      = f.text_area :body
+      = f.file_field :files, multiple: true, direct_upload: true
+    p
 
-    p= f.submit 'Save'
+      = f.fields_for :links do |l|
+        = render "links/link_fields", f: l
+      .links
+        = link_to_add_association 'add link', f, :links, partial: "links/link_fields"    
+
+    p
+      = f.submit 'Save'
