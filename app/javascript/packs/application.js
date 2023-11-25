@@ -18,10 +18,12 @@
 
 require("@rails/ujs").start()
 require("turbolinks").start()
+require("@nathanvda/cocoon")
 import * as ActiveStorage from "@rails/activestorage"
 ActiveStorage.start()
 require("channels")
 require("jquery")
+
 
 import "../utilities/answers.js"
 import "../utilities/questions.js"

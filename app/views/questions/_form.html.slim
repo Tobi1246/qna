@@ -8,5 +8,9 @@
   p 
     = f.label :files
     = f.file_field :files, multiple: true, id: 'question-files-create', direct_upload: true
-  p
-    =f.submit 'Ask'
+
+    = f.fields_for :links do |l|
+      = render "links/link_fields", f: l
+    .links
+      = link_to_add_association 'add link', f, :links, partial: "links/link_fields"
+  =f.submit 'Ask'

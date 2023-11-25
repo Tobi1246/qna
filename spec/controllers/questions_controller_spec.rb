@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author_id: user.id) }
+  let(:answer) { create(:answer, question: question, author: user) }
 
   describe 'GET #index' do 
     it 'renders index view' do
@@ -12,18 +13,31 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    before  { get :show, params: { id: question } }
     it 'renders show view' do 
-      get :show, params: { id: question }
-      expect(response).to render_template :show
+      expect(response).to render_template :show 
     end
+    it 'assigns a new answer for @question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end    
+    it 'assigns a new links to @answer' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end    
   end
 
   describe 'GET #new' do
     before { login(user) }
-    it 'renders new view' do
-      get :new
+
+    before { get :new }
+    it 'renders new view' do  
       expect(response).to render_template :new
     end
+    it 'assigns a new question to @question' do 
+      expect(assigns(:question)).to be_a_new(Question)
+    end
+    it 'assigns a new links to @question' do 
+      expect(assigns(:question).links.first).to be_a_new(Link)
+    end    
   end
 
   describe 'GET #update' do

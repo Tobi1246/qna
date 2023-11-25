@@ -3,5 +3,10 @@
     = f.label :body, "New"
     = f.text_area :body, id: 'answer-body-create'
     = f.file_field :files, multiple: true, id: 'answer-files-create', direct_upload: true
-  p
-    = f.submit 'Answer'
+    
+    = f.fields_for :links do |l|
+      = render "links/link_fields", f: l
+    .links
+      = link_to_add_association 'add link', f, :links, partial: "links/link_fields"
+
+  = f.submit 'Answer'

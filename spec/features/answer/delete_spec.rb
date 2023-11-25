@@ -31,7 +31,7 @@ feature "user can deleted answer" do
       expect(page).to have_link 'spec_helper.rb'
     end
 
-    scenario "not author dont see button DeleteA",  do
+    scenario "not author dont see button DeleteA" do
       expect(page).to have_no_button "DeleteA" 
     end
   end

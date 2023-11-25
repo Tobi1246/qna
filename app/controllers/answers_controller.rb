@@ -17,6 +17,7 @@ class AnswersController < ApplicationController
 
   def mark_best
     @answer.mark_best
+    BadgeService.new(@answer).call  if @answer.best?
     @answers = @answer.question.answers
   end
 
@@ -32,7 +33,7 @@ class AnswersController < ApplicationController
   end  
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, files: []).merge(author: current_user)
+    params.require(:answer).permit(:body, :correct, files: [], links_attributes: [:name, :url, :_destroy]).merge(author: current_user)
   end
 
   def find_question
