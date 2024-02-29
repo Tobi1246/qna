@@ -9,6 +9,8 @@
         = link_to file.filename.to_s, url_for(file)
         p= link_to "delete file", destroy_attach_file_answer_url(file), method: :delete, remote: true if current_user&.author?(answer)
 
+  = render answer.links if answer.links.present?      
+
   -if current_user&.author?(answer.question) && answer.best == false
     = link_to "Best Answer", mark_best_answer_path(answer), method: :patch, remote: true
 
@@ -22,5 +24,10 @@
     = f.label :edit
     = f.text_area :body
     p= f.file_field :files, multiple: true, direct_upload: true
+
+    = f.fields_for :links do |l|
+      = render "links/link_fields", f: l
+    .links
+      = link_to_add_association 'add link', f, :links, partial: "links/link_fields"    
 
     = f.submit 'Save'

@@ -1,0 +1,7 @@
+- if !current_user.badges.empty?
+  .h3="Ur badges:"
+  = render @badges
+- else
+  Ur dont have badges
+
+p= link_to "All questions", questions_path
