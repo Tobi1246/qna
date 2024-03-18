@@ -1,6 +1,9 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show update destroy]
+  include VotesControl
+  
+  before_action :authenticate_user!, except: %i[index show destroy_vote good_vote bad_vote]
+  before_action :set_question, only: %i[show update destroy destroy_vote 
+                                        good_vote bad_vote]
 
   def index
     @questions = Question.all
@@ -34,6 +37,18 @@ class QuestionsController < ApplicationController
     @question.destroy
     redirect_to questions_path,alert: "Question deleted"
   end
+
+  def good_vote
+    good_vote_create(@question)
+  end
+
+  def bad_vote
+    bad_vote_create(@question)
+  end  
+
+  def destroy_vote
+    delete_vote(@question)
+  end 
 
   def destroy_attach_file
     @file = ActiveStorage::Attachment.find(params[:id])

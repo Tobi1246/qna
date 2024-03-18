@@ -3,6 +3,18 @@
    p Best answer:
   =answer.body
 
+  .votes_answer
+    p= button_to "Good", good_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-good" }, remote: true
+    h votes result:
+    .vote_result
+      = answer.result_vote
+    p= button_to "Bad", bad_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-bad" }, remote: true
+  .delete_vote
+    -if answer.user_voted?(current_user)
+      p= button_to "delete my vote", destroy_vote_answer_path(answer), method: :delete, remote: true
+    -else
+      p= button_to "delete my vote", destroy_vote_answer_path(answer), method: :delete, remote: true, class: "hidden"    
+
   -if answer.files.attached?
     -answer.files.each do |file|
       .files_answer id = file.id
