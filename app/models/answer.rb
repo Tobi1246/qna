@@ -3,7 +3,7 @@ class Answer < ApplicationRecord
   belongs_to :question
 
   include AttachFile
-  include AllVotes
+  include VoteModule
 
   validates :body, presence: true
 

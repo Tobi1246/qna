@@ -3,7 +3,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
 
   include AttachFile
-  include AllVotes
+  include VoteModule
 
   validates :title, :body, presence: true
 end

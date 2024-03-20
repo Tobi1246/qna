@@ -1,10 +1,11 @@
 .question
   .votes_question
-    p= button_to "Good", good_vote_question_path(question), method: :patch, data: { type: :json, id: "vote-good" }, remote: true
-    h votes result:
-    .vote_result
-      = question.result_vote
-    p= button_to "Bad", bad_vote_question_path(question), method: :patch, data: { type: :json, id: "vote-bad" }, remote: true
+    -if user_signed_in?
+      p= button_to "Good", good_vote_question_path(question), method: :patch, data: { type: :json, id: "vote-good" }, remote: true
+      h votes result:
+      .vote_result
+        = question.result_vote
+      p= button_to "Bad", bad_vote_question_path(question), method: :patch, data: { type: :json, id: "vote-bad" }, remote: true
   .delete_vote
     -if question.user_voted?(current_user)
       p= button_to "delete my vote", destroy_vote_question_path(question), method: :delete, remote: true

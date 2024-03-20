@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   include VotesControl
   
-  before_action :authenticate_user!, except: %i[index show destroy_vote good_vote bad_vote]
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show update destroy destroy_vote 
                                         good_vote bad_vote]
 
@@ -36,18 +36,6 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     redirect_to questions_path,alert: "Question deleted"
-  end
-
-  def good_vote
-    good_vote_create(@question)
-  end
-
-  def bad_vote
-    bad_vote_create(@question)
-  end  
-
-  def destroy_vote
-    delete_vote(@question)
   end 
 
   def destroy_attach_file

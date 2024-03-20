@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   include VotesControl
 
-  before_action :authenticate_user!, except: %i[create destroy update destroy_vote good_vote bad_vote]  
+  before_action :authenticate_user! 
   before_action :find_question, only: %i[create edit]
   before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote]
 
@@ -16,18 +16,6 @@ class AnswersController < ApplicationController
   def update
     @answer.update(answer_params)
   end
-
-  def good_vote
-    good_vote_create(@answer)
-  end
-
-  def bad_vote
-    bad_vote_create(@answer)
-  end
-
-  def destroy_vote
-    delete_vote(@answer)
-  end 
 
   def mark_best
     @answer.mark_best

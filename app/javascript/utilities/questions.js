@@ -18,11 +18,10 @@ $(document).on('turbolinks:load',function(){
 $(document).on('turbolinks:load',function(){
   $('.question .votes_question').on('ajax:success', function(e) {
     let questionVotePoint = e.detail[0];
-    $('body > div.questions > div > div > div').replaceWith(questionVotePoint);
-    $('body > div.questions > div > div.delete_vote > form > input[type=submit]:nth-child(2)').show('');  
+    $('.votes_question .vote_result').replaceWith(questionVotePoint);
+    $('.question .delete_vote > form > input').show('');
   })
     .on('ajax:error', function(e) {
-      console.log(e)
       let errors = e.detail[0];
       $.each(errors, function(index, value){
         $('.question-errors').replaceWith('<p>' + value + '<p>');
@@ -31,11 +30,10 @@ $(document).on('turbolinks:load',function(){
 
   $('.question .delete_vote').on('ajax:success', function(e) {
     let questionVotePoint = e.detail[0];
-    $('body > div.questions > div > div > div').replaceWith(questionVotePoint + '<p>' + 'Ur vote delete' + '<p>');
-    $('body > div.questions > div > div.delete_vote > form > input[type=submit]:nth-child(2)').hide('');
+    $('.question .votes_question .vote_result').replaceWith(questionVotePoint + '<p>' + 'Ur vote delete' + '<p>');
+    $('.question .delete_vote > form > input').hide('');
   })
     .on('ajax:error', function(e) {
-      console.log(e)
       let errors = e.detail[0];
       $.each(errors, function(index, value){
         $('.question-errors').replaceWith('<p>' + value + '<p>');
