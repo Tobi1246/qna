@@ -20,5 +20,4 @@ module VoteModule
   def user_voted?(id)
     votes.where(user_id: id).present?
   end
-      
 end

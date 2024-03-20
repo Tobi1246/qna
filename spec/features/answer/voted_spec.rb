@@ -59,5 +59,4 @@ feature "user can vote to answer", %q{
       end      
     end
   end     
-
 end
