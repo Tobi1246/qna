@@ -13,6 +13,8 @@ RSpec.describe Answer, type: :model do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
   let(:answers) { create_list(:answer, 2, question: question, author: user) }
+  let(:good_vote) { answers[0].votes.create(vote_score: 1, user: user) }
+  let(:bad_vote) { answers[0].votes.create(vote_score: -1, user: user) }
 
   it "should change mark to best" do
     expect { answers[0].mark_best }.to change(answers[0], :best)
@@ -26,5 +28,17 @@ RSpec.describe Answer, type: :model do
 
   it 'have multi the attach file' do
     expect(question.answers.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
-  end  
+  end 
+
+  it 'good votes' do
+    expect(good_vote.votable.good_votes).to eq(1)
+  end
+
+  it 'bad votes' do
+    expect(bad_vote.votable.bad_votes).to eq(1)   
+  end
+
+  it 'result votes' do
+    expect(bad_vote.votable.result_vote).to eq(-1)
+  end
 end

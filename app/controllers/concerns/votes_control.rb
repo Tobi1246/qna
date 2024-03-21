@@ -6,28 +6,33 @@ module VotesControl
   end
   
   def good_vote
-    set_model.votes.new(user: current_user, vote_score: 1)
-    respond_format_json(set_model)
+    vote(1)
   end
 
   def bad_vote
-    set_model.votes.new(user: current_user, vote_score: -1)
-    respond_format_json(set_model)
+    vote(-1)
   end
 
   def destroy_vote
-    Vote.find_by(user: current_user, voteble_type: set_model.class.to_s, voteble_id: set_model.id).destroy
+    @vote = Vote.find_by(user: current_user, votable_type: set_model.class.to_s, votable_id: set_model.id)
+    return error(set_model) if @vote == nil
+    @vote.destroy
     respond_format_json(set_model)
   end
 
   private
 
+  def vote(gooDorBab)
+    set_model.votes.new(user: current_user, vote_score: gooDorBab)
+    respond_format_json(set_model)    
+  end
+
+  def error(param)
+    render json: param.errors.full_messages, status: :unprocessable_entity
+  end
+
   def set_model
-    if @answer.nil?
-      @question
-    else @question.nil?
-      @answer
-    end
+    @answer || @question
   end
 
   def respond_format_json(param)

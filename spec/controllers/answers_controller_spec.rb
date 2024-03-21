@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
-  let(:answer) { create(:answer, question: question, author: user) }
+  let!(:answer) { create(:answer, question: question, author: user) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -53,6 +53,26 @@ RSpec.describe AnswersController, type: :controller do
         expect { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(answer, :body)
       end
     end
-  end  
+  end
+
+  describe 'DELETE #destroy_vote' do
+    before { login(user) }
+    let!(:vote) { create(:vote, votable: answer, vote_score: 1, user: user) }
+
+    it 'deletes the question' do
+      expect { delete :destroy_vote, params: { id: answer }, format: :json }.to change(answer.votes, :count).by(-1)
+    end
+  end
+
+  describe 'PATCH #good_vote #bad_vote' do
+    before { login(user) }
+
+    it 'good vote create' do
+      expect { patch :good_vote, params: { id: answer, user: user }, format: :json }.to change(answer.votes, :count).by(1)
+    end
+    it 'bad vote create' do
+      expect { patch :bad_vote, params: { id: answer, user: user }, format: :json }.to change(answer.votes, :count).by(1)
+    end    
+  end     
 
 end

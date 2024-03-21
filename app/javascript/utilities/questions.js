@@ -18,19 +18,19 @@ $(document).on('turbolinks:load',function(){
 $(document).on('turbolinks:load',function(){
   $('.question .votes_question').on('ajax:success', function(e) {
     let questionVotePoint = e.detail[0];
-    $('.votes_question .vote_result').replaceWith(questionVotePoint);
+    $('.votes_question .vote_result').html(questionVotePoint);
     $('.question .delete_vote > form > input').show('');
   })
     .on('ajax:error', function(e) {
       let errors = e.detail[0];
       $.each(errors, function(index, value){
-        $('.question-errors').replaceWith('<p>' + value + '<p>');
+        $('.question-errors').html('<p>' + value + '<p>');
       })
     })
 
   $('.question .delete_vote').on('ajax:success', function(e) {
     let questionVotePoint = e.detail[0];
-    $('.question .votes_question .vote_result').replaceWith(questionVotePoint + '<p>' + 'Ur vote delete' + '<p>');
+    $('.question .votes_question .vote_result').html(questionVotePoint + '<p>' + 'Ur vote delete' + '<p>');
     $('.question .delete_vote > form > input').hide('');
   })
     .on('ajax:error', function(e) {

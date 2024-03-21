@@ -2,19 +2,19 @@ module VoteModule
   extend ActiveSupport::Concern
 
   included do
-    has_many :votes, dependent: :destroy, as: :voteble
+    has_many :votes, dependent: :destroy, as: :votable
   end
 
-  def good_vote
-    votes.where(vote_score: 1).count
+  def good_votes
+    votes.good.count
   end
 
-  def bad_vote
-    votes.where(vote_score: -1).count
+  def bad_votes
+    votes.bad.count
   end
 
   def result_vote
-    votes.pluck(:vote_score).sum
+    votes.sum(:vote_score)
   end
 
   def user_voted?(id)

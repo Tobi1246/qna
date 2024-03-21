@@ -118,4 +118,24 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy_vote' do
+    before { login(user) }
+    let!(:vote) { create(:vote, votable: question, vote_score: 1, user: user) }
+
+    it 'deletes the question' do
+      expect { delete :destroy_vote, params: { id: question }, format: :json }.to change(question.votes, :count).by(-1)
+    end
+  end
+
+  describe 'PATCH #good_vote #bad_vote' do
+    before { login(user) }
+
+    it 'good vote create' do
+      expect { patch :good_vote, params: { id: question, user: user }, format: :json }.to change(question.votes, :count).by(1)
+    end
+    it 'bad vote create' do
+      expect { patch :bad_vote, params: { id: question, user: user }, format: :json }.to change(question.votes, :count).by(1)
+    end    
+  end   
+
 end

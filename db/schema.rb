@@ -106,12 +106,12 @@ ActiveRecord::Schema.define(version: 2024_03_11_221905) do
   create_table "votes", force: :cascade do |t|
     t.integer "vote_score"
     t.bigint "user_id"
-    t.string "voteble_type"
-    t.bigint "voteble_id"
+    t.string "votable_type"
+    t.bigint "votable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["voteble_type", "voteble_id"], name: "index_votes_on_voteble"
+    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
