@@ -2,7 +2,7 @@ module VotesControl
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_model, only: %i[good_vote bad_vote destroy_vote]
+    before_action :votable, only: %i[good_vote bad_vote destroy_vote]
   end
   
   def good_vote
@@ -14,24 +14,29 @@ module VotesControl
   end
 
   def destroy_vote
-    @vote = Vote.find_by(user: current_user, votable_type: set_model.class.to_s, votable_id: set_model.id)
-    return error(set_model) if @vote == nil
+    @vote = Vote.find_by(user: current_user, votable_type: votable.class.to_s, votable_id: votable.id)
+    #current_user.votes.where(votable: votable).destroy
+    return not_found if @vote == nil
     @vote.destroy
-    respond_format_json(set_model)
+    respond_format_json(votable)
   end
 
   private
 
-  def vote(gooDorBab)
-    set_model.votes.new(user: current_user, vote_score: gooDorBab)
-    respond_format_json(set_model)    
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end  
+
+  def vote(value)
+    votable.votes.new(user: current_user, vote_score: value)
+    respond_format_json(votable)    
   end
 
   def error(param)
     render json: param.errors.full_messages, status: :unprocessable_entity
   end
 
-  def set_model
+  def votable
     @answer || @question
   end
 
