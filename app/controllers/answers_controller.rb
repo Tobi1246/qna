@@ -1,7 +1,9 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[create destroy update ]  
+  include VotesControl
+
+  before_action :authenticate_user! 
   before_action :find_question, only: %i[create edit]
-  before_action :set_answer, only: %i[destroy update mark_best ]
+  before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote]
 
   def create
     @answer = @question.answers.create(answer_params)
@@ -13,7 +15,7 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params)
-  end 
+  end
 
   def mark_best
     @answer.mark_best

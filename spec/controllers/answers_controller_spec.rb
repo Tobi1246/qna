@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
-  let(:answer) { create(:answer, question: question, author: user) }
+  let!(:answer) { create(:answer, question: question, author: user) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -53,6 +53,55 @@ RSpec.describe AnswersController, type: :controller do
         expect { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(answer, :body)
       end
     end
-  end  
+  end
+
+  describe 'DELETE #destroy_vote' do
+    before { login(user) }
+    let!(:vote) { create(:vote, votable: answer, vote_score: 1, user: user) }
+    context 'with valid attributes' do
+      it 'deletes the answer vote' do
+        expect { delete :destroy_vote, params: { id: answer }, format: :json }.to change(answer.votes, :count).by(-1)
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:user2) { create(:user) }
+      before { login(user2) }
+      it 'not deletes the answer vote' do
+        expect { delete :destroy_vote, params: { id: answer }, format: :json }.to raise_error(ActionController::RoutingError)
+      end
+    end   
+  end
+
+  describe 'PATCH #good_vote' do
+    context 'with valid attributes' do
+      before { login(user) }
+      it 'create one good vote and double good vote not create' do
+        expect { patch :good_vote, params: { id: answer, user: user }, format: :json }.to change(answer.votes, :count).by(1)
+        expect { patch :good_vote, params: { id: answer, user: user }, format: :json }.to_not change(answer.votes, :count)
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'good vote do not create' do
+        expect { patch :good_vote, params: { id: answer }, format: :json }.to_not change(answer.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #bad_vote' do
+    context 'with valid attributes' do
+      before { login(user) }   
+      it 'create one bad vote and double bad vote not create' do
+        expect { patch :bad_vote, params: { id: answer, user: user }, format: :json }.to change(answer.votes, :count).by(1)
+        expect { patch :bad_vote, params: { id: answer, user: user }, format: :json }.to_not change(answer.votes, :count)
+      end
+    end
+    context 'with invalid attributes' do
+      it 'bad vote do not create' do
+        expect { patch :bad_vote, params: { id: answer }, format: :json }.to_not change(answer.votes, :count)
+      end
+    end    
+  end    
 
 end

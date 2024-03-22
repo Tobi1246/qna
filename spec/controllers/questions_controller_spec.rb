@@ -118,4 +118,53 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy_vote' do
+    before { login(user) }
+    let!(:vote) { create(:vote, votable: question, vote_score: 1, user: user) }
+    context 'with valid attributes' do
+      it 'deletes the question vote' do
+        expect { delete :destroy_vote, params: { id: question }, format: :json }.to change(question.votes, :count).by(-1)
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:user2) { create(:user) }
+      before { login(user2) }
+      it 'not deletes the question vote' do
+        expect { delete :destroy_vote, params: { id: question }, format: :json }.to raise_error(ActionController::RoutingError)
+      end
+    end   
+  end
+
+  describe 'PATCH #good_vote' do
+    context 'with valid attributes' do
+      before { login(user) }
+      it 'create one good vote and double good vote not create' do
+        expect { patch :good_vote, params: { id: question, user: user }, format: :json }.to change(question.votes, :count).by(1)
+        expect { patch :good_vote, params: { id: question, user: user }, format: :json }.to_not change(question.votes, :count)
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'good vote do not create' do
+        expect { patch :good_vote, params: { id: question }, format: :json }.to_not change(question.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #bad_vote' do
+    context 'with valid attributes' do
+      before { login(user) }   
+      it 'create one bad vote and double bad vote not create' do
+        expect { patch :bad_vote, params: { id: question, user: user }, format: :json }.to change(question.votes, :count).by(1)
+        expect { patch :bad_vote, params: { id: question, user: user }, format: :json }.to_not change(question.votes, :count)
+      end
+    end
+    context 'with invalid attributes' do
+      it 'bad vote do not create' do
+        expect { patch :bad_vote, params: { id: question }, format: :json }.to_not change(question.votes, :count)
+      end
+    end    
+  end    
+
 end
