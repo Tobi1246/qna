@@ -16,7 +16,7 @@ module VotesControl
   def destroy_vote
     @vote = Vote.find_by(user: current_user, votable_type: votable.class.to_s, votable_id: votable.id)
     #current_user.votes.where(votable: votable).destroy
-    return not_found if @vote == nil
+    return not_found unless @vote
     @vote.destroy
     respond_format_json(votable)
   end
