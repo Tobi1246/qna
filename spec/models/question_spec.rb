@@ -30,5 +30,5 @@ RSpec.describe Question, type: :model do
 
   it 'result votes' do
     expect(bad_vote.votable.result_vote).to eq(-1)
-  end  
+  end
 end
