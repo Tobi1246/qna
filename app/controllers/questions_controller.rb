@@ -1,9 +1,10 @@
 class QuestionsController < ApplicationController
   include VotesControl
+  include ComentsControl
   
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show update destroy destroy_vote 
-                                        good_vote bad_vote]
+                                        good_vote bad_vote create_coment]
 
   def index
     @questions = Question.all

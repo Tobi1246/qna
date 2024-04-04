@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user! 
   before_action :find_question, only: %i[create edit]
-  before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote]
+  before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote create_coment]
 
   def create
     @answer = @question.answers.create(answer_params)

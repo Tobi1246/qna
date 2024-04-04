@@ -2,7 +2,7 @@
   -if answer.best == true
    p Best answer:
   p=answer.body
-
+  
   .votes_answer
     -if user_signed_in?
       p= button_to "Good", good_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-good" }, remote: true

@@ -4,6 +4,7 @@ class Question < ApplicationRecord
 
   include AttachFile
   include VoteModule
+  include Comentable
 
   validates :title, :body, presence: true
 end
