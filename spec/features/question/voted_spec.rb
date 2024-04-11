@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-feature "user can vote to answer", %q{
-  only login user can vote to answer
-  only login user can delete self answer
+feature "user can vote to question", %q{
+  only login user can vote to question
+  only login user can delete self question
 } do
   
   given(:user) { create(:user) }
@@ -32,7 +32,7 @@ feature "user can vote to answer", %q{
       within '.questions' do
         click_on "Good"
 
-        expect(page).to have_content "votes result:1"
+        expect(page).to have_content "votes result:\n1"
       end
     end
 
@@ -40,7 +40,7 @@ feature "user can vote to answer", %q{
       within '.questions' do
         click_on "Bad"
 
-        expect(page).to have_content "votes result:-1"
+        expect(page).to have_content "votes result:\n-1"
       end
     end
 

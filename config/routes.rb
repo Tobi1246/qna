@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users, path_names: { sign_in: :login, sign_out: :quit }
   resources :links, only: %i[destroy]
-  
+  resources :coments, only: %i[destroy]
+
   concern :votable do
     member do 
       patch :bad_vote
@@ -13,8 +14,7 @@ Rails.application.routes.draw do
 
   concern :comentable do
     member do 
-      patch :create_coment                      
-      delete :destroy_coment
+      patch :create_coment
     end
   end    
 

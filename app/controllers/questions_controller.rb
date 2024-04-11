@@ -1,10 +1,11 @@
 class QuestionsController < ApplicationController
   include VotesControl
-  include ComentsControl
+  include ComentControl
   
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show update destroy destroy_vote 
                                         good_vote bad_vote create_coment]
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.all
@@ -53,4 +54,19 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy])
   end
+
+  def publish_question
+    unless @question.errors.any?
+
+      rendered_question = ApplicationController.render(
+        partial: 'questions/question_broadcast',
+        locals: { question: @question }
+      )
+
+      ActionCable.server.broadcast(
+        'questions',
+        { question: rendered_question, question_id: @question.id }
+      )
+    end
+  end  
 end

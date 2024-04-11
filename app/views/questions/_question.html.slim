@@ -1,4 +1,4 @@
-  .question
+.question id = question.id
   .votes_question
     -if user_signed_in?
       p= button_to "Good", good_vote_question_path(question), method: :patch, data: { type: :json, id: "vote-good" }, remote: true
@@ -13,11 +13,11 @@
       p= button_to "delete my vote", destroy_vote_question_path(question), method: :delete, remote: true, class: "hidden"  
   p= question.title
   p= question.body
-  p Cometns:
-  - question.coments.each do |coment|
-    .coment_question id = coment.id
-      = coment.body.to_s 
-      = link_to " delete coment", destroy_coment_question_path(coment), method: :delete
+
+  p Coments question:
+  .coment_question
+    
+    =render question.coments
 
   -if question.files.attached? 
     -question.files.each do |file|
@@ -32,5 +32,5 @@
     p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
     = button_to 'DeleteQ', question_path(question), method: :delete, remote: true
 
-  =render 'form_coment'
+  =render 'form_coment' if user_signed_in?
   =render 'form_in_line'

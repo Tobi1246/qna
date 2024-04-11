@@ -5,7 +5,8 @@ nav
        = button_to "log_out", destroy_user_session_path, method: :delete
        = link_to "Badges", badges_path
     - else 
-      p= link_to "login", new_user_session_path 
-      = link_to "sign_up", new_user_registration_path
+      p
+        p= link_to "login", new_user_session_path 
+        = link_to "sign_up", new_user_registration_path
 
 

@@ -18,5 +18,9 @@ class User < ApplicationRecord
 
   def author?(question_or_answer)
     self.id == question_or_answer.author_id
-  end                   
+  end
+
+  def author_coment?(coment)
+    self.id == coment.user_id
+  end             
 end

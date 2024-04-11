@@ -104,4 +104,17 @@ RSpec.describe AnswersController, type: :controller do
     end    
   end    
 
+  describe 'PATCH #create_coment' do
+    context 'with valid attributes' do
+      before { login(user) }   
+      it 'create coment answer' do
+        expect { patch :create_coment, params: { id: answer, coment: { body: 'body' }}, format: :js }.to change(answer.coments, :count).by(1)
+      end
+    end
+    context 'with invalid attributes' do
+      it 'bad vote do not create' do
+        expect { patch :create_coment, params: { id: answer }, format: :js }.to_not change(answer.coments, :count)
+      end
+    end    
+  end  
 end

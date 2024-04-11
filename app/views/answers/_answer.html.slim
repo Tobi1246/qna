@@ -2,7 +2,7 @@
   -if answer.best == true
    p Best answer:
   p=answer.body
-  
+
   .votes_answer
     -if user_signed_in?
       p= button_to "Good", good_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-good" }, remote: true
@@ -30,7 +30,17 @@
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = button_to 'DeleteA', answer_path(answer), method: :delete, remote: true
 
+  p Cometns answer:
+  .coment_answer
+    
+    =render answer.coments
 
+  -if user_signed_in?
+    = form_with model: [answer, answer.coments.build], url: create_coment_answer_path(answer),
+      method: :patch, local: false do |f|
+      = f.text_area :body, id: "answer_coment_body"
+
+      =f.submit 'Coment answer'
 
   .answer= form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
     = f.label :edit

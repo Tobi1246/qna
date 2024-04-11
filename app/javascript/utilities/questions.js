@@ -40,3 +40,17 @@ $(document).on('turbolinks:load',function(){
       })
     })
 });
+
+$(document).on('turbolinks:load',function(){
+  $('.question .form').on('ajax:success', function(e) {
+    let coment = e.detail[0];
+    $('.coment_question').html(coment.body);
+    console.log(coment.body)
+  })
+    .on('ajax:error', function(e) {
+      let errors = e.detail[0];
+      $.each(errors, function(index, value){
+        $('.question-errors').html('<p>' + value + '<p>');
+      })
+    })
+});

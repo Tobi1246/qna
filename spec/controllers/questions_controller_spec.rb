@@ -165,6 +165,19 @@ RSpec.describe QuestionsController, type: :controller do
         expect { patch :bad_vote, params: { id: question }, format: :json }.to_not change(question.votes, :count)
       end
     end    
-  end    
+  end
 
+  describe 'PATCH #create_coment' do
+    context 'with valid attributes' do
+      before { login(user) }   
+      it 'create coment question' do
+        expect { patch :create_coment, params: { id: question, coment: { body: 'body' }}, format: :js }.to change(question.coments, :count).by(1)
+      end
+    end
+    context 'with invalid attributes' do
+      it 'bad vote do not create' do
+        expect { patch :create_coment, params: { id: question }, format: :js }.to_not change(question.coments, :count)
+      end
+    end    
+  end      
 end
