@@ -15,19 +15,28 @@ module ComentControl
 
   def publish_coment
     unless @coment.errors.any?
+      
       rendered_coment = ApplicationController.render(
         partial: 'coments/coment',
         locals: { coment: @coment }
       )
 
       ActionCable.server
-                 .broadcast('coments',
+                 .broadcast("question-#{set_question_id}",
                             {
                               coment: rendered_coment,
-                              comentable: @comentable
+                              comentable: @comentable.class.to_s.downcase
                             })
     end
-  end  
+  end
+
+  def set_question_id
+    if @comentable.class == 'Answer'
+      @comentable.question_id
+    else
+      @comentable.id
+    end
+  end
 
   def comentable
     @answer || @question
