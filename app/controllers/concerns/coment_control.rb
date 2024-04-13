@@ -31,8 +31,8 @@ module ComentControl
   end
 
   def set_question_id
-    if @comentable.class == 'Answer'
-      @comentable.question_id
+    if @comentable.class.to_s == 'Answer'
+      @comentable.question.id
     else
       @comentable.id
     end
