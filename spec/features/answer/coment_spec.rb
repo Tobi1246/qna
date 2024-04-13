@@ -46,7 +46,7 @@ feature "user can coment question", %q{
       expect(page).to have_no_content "delete coment"
     end
 
-    scenario "User can delete self coment", js: true do
+    scenario "User can delete self answer coment", js: true do
       within '.answers' do
         fill_in 'answer_coment_body', with: 'coment created'
         click_on "Coment answer"        
@@ -56,5 +56,32 @@ feature "user can coment question", %q{
         expect(page).to have_no_content "delete coment"
       end      
     end
-  end     
+  end
+
+  context "multiple sessions" do
+    scenario "question appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.answers' do
+          fill_in 'answer_coment_body', with: 'coment created'
+          click_on "Coment answer"
+
+          expect(page).to have_content "coment created"
+        end
+      end
+
+      Capybara.using_session('guest') do
+
+        expect(page).to have_content "coment created"
+      end
+    end
+  end        
 end

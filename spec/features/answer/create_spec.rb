@@ -37,5 +37,30 @@ feature "User create answer" do
 
     expect(page).to have_no_content 'Answer' 
   end
+
+  fcontext "multiple sessions" do
+    scenario "question appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer-body-create', with: "Answer123"
+        click_on "Answer"
+    
+        expect(page).to have_content 'Answer123'
+      end
+
+      Capybara.using_session('guest') do
+
+        expect(page).to have_content 'Answer123'
+      end
+    end
+  end   
 end
 

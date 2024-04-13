@@ -49,8 +49,8 @@ feature 'User can create question', %q{
     expect(page).to have_no_content "Ask question"
   end
 
-  fcontext "multiple sessions" do
-    scenario "question appears on another user's page" do
+  context "multiple sessions" do
+    scenario "question appears on another user's page", js: true do
       Capybara.using_session('user') do
         sign_in(user)
         visit questions_path

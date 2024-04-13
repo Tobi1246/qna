@@ -6,7 +6,7 @@ feature "user can coment question", %q{
 } do
   
   given(:user) { create(:user) }
-  given!(:question) { create(:question, author: user) }
+  given(:question) { create(:question, author: user) }
 
   scenario "Unaunthenticated user no see buttons" do
     visit question_path(question)
@@ -45,15 +45,41 @@ feature "user can coment question", %q{
       expect(page).to have_no_content "delete coment"
     end
 
-    scenario "User can delete self coment", js: true do
+    scenario "User can delete self question coment", js: true do
       within '.questions' do
-        fill_in 'question_coment_body', with: 'coment created'
+        fill_in 'question_coment_body', with: 'coment question created'
         click_on "Coment"        
         click_on "delete coment"
 
-        expect(page).to have_no_content "coment created"
+        expect(page).to have_no_content "coment question created"
         expect(page).to have_no_content "delete coment"
       end      
     end
-  end     
+  end
+  fcontext "multiple sessions" do
+    scenario "question appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.questions' do
+          fill_in 'question_coment_body', with: 'coment created'
+          click_on "Coment"
+
+          expect(page).to have_content "coment created"
+        end
+      end
+
+      Capybara.using_session('guest') do
+
+        expect(page).to have_content "coment created"
+      end
+    end
+  end    
 end
