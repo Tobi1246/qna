@@ -13,9 +13,14 @@ class User < ApplicationRecord
   has_many :created_answers, class_name: 'Answer',
                            foreign_key: 'author_id',
                            dependent: :destroy
-  has_many :votes, dependent: :destroy                         
+  has_many :votes, dependent: :destroy
+  has_many :coments, dependent: :destroy                        
 
   def author?(question_or_answer)
     self.id == question_or_answer.author_id
-  end                   
+  end
+
+  def author_coment?(coment)
+    self.id == coment.user_id
+  end             
 end

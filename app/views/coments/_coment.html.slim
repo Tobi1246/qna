@@ -1,0 +1,4 @@
+.coment id = coment.id
+  p
+  	= coment.body
+  	= link_to "delete coment", coment_path(coment), method: :delete, remote: true 

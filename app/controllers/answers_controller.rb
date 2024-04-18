@@ -1,9 +1,11 @@
 class AnswersController < ApplicationController
   include VotesControl
+  include ComentControl
 
   before_action :authenticate_user! 
   before_action :find_question, only: %i[create edit]
-  before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote]
+  before_action :set_answer, only: %i[destroy update mark_best destroy_vote good_vote bad_vote create_coment ]
+  after_action :publish_answer, only: %i[create]
 
   def create
     @answer = @question.answers.create(answer_params)
@@ -29,6 +31,24 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    unless @answer.errors.any?
+      rendered_answer = ApplicationController.render(
+        partial: 'answers/answer_broadcast',
+        locals: { answer: @answer }
+      )
+
+      ActionCable.server
+                 .broadcast("question-#{@question.id}",
+                            {
+                              answer: rendered_answer,
+                              answer_id: @answer.id,
+                              answer_author_id: @answer.author.id,
+                              question_author_id: @question.author.id
+                            })
+    end
+  end  
 
   def set_answer
     @answer = Answer.with_attached_files.find(params[:id])

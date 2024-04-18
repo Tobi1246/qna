@@ -33,7 +33,7 @@ feature "user can vote to answer", %q{
       within '.answers' do
         click_on "Good"
 
-        expect(page).to have_content "votes result answer:1"
+        expect(page).to have_content "votes result answer:\n1"
       end
     end
 
@@ -41,7 +41,7 @@ feature "user can vote to answer", %q{
       within '.answers' do
         click_on "Bad"
 
-        expect(page).to have_content "votes result answer:-1"
+        expect(page).to have_content "votes result answer:\n-1"
       end
     end
 

@@ -20,8 +20,6 @@ $(document).on('turbolinks:load',function(){
         $('.answer-errors').html('<p>' + value + '<p>');
       })
     })
-
-
 });
 
 $(document).on('turbolinks:load',function(){

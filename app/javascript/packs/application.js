@@ -16,17 +16,23 @@
 // const imagePath = (name) => images(name, true)
 //= require jquery3
 
+import {createConsumer} from "@rails/actioncable"
+
 require("@rails/ujs").start()
 require("turbolinks").start()
-require("@nathanvda/cocoon")
-import * as ActiveStorage from "@rails/activestorage"
-ActiveStorage.start()
-require("channels")
-require("jquery")
+require("@rails/activestorage").start()
 
+require("@nathanvda/cocoon")
+require("@rails/actioncable")
+require("jquery")
+require("channels")
 
 import "../utilities/answers.js"
 import "../utilities/questions.js"
 import "bootstrap";
 
 import '../stylesheets/application.scss'
+
+let App = App || {}
+
+App.cable = createConsumer()

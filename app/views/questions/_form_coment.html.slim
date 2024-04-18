@@ -1,0 +1,5 @@
+= form_with model: [@question, @question.coments.build], url: create_coment_question_path(@question),
+  method: :patch, local: false do |f|
+  = f.text_area :body, id: 'question_coment_body'
+
+  =f.submit 'Coment'

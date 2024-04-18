@@ -1,0 +1,25 @@
+.answer id = answer.id  
+  -if answer.best == true
+   p Best answer:
+  p=answer.body
+
+  .votes_answer
+    p= button_to "Good", good_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-good" }, remote: true, class: "vote-link hidden"
+    p= button_to "Bad", bad_vote_answer_path(answer), method: :patch, data: { type: :json, id: "vote-bad" }, remote: true, class: "vote-link hidden"
+    h votes result answer:
+    .vote_result
+      = answer.result_vote    
+  .delete_vote
+    p= button_to "delete my vote", destroy_vote_answer_path(answer), method: :delete, remote: true, class: "hidden"
+  -if answer.files.attached?
+    -answer.files.each do |file|
+      .files_answer id = file.id
+        = link_to file.filename.to_s, url_for(file)
+
+  = link_to "Best Answer", mark_best_answer_path(answer), method: :patch, remote: true, class: "best-link hidden" 
+
+  = form_with model: [answer, answer.coments.build], url: create_coment_answer_path(answer),
+    method: :patch, local: false, class: 'hidden' do |f|
+    = f.text_area :body, id: "answer_coment_body"
+
+    =f.submit 'Coment answer'
